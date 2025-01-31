@@ -9,8 +9,10 @@ const Followers = () => {
     const [followers, setFollowers] = useState([]);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+    const [totalFollowers, setTotalFollowers] = useState(0);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
+    const perPage = 30; // 🔹 Show 30 followers per page
 
     useEffect(() => {
         const getFollowers = async () => {
@@ -18,13 +20,19 @@ const Followers = () => {
             setError(null);
             setFollowers([]);
 
-            const data = await fetchFollowers(username, page);
+            const profileResponse = await fetch(`https://api.github.com/users/${username}`);
+            const profileData = await profileResponse.json();
+            if (profileData.followers !== undefined) {
+                setTotalFollowers(profileData.followers);
+                setTotalPages(Math.ceil(profileData.followers / perPage));
+            }
+
+            const data = await fetchFollowers(username, page, perPage);
 
             if (!Array.isArray(data) || data.length === 0) {
                 setError("No followers found.");
             } else {
                 setFollowers(data);
-                setTotalPages(50);
             }
 
             setLoading(false);
@@ -35,7 +43,7 @@ const Followers = () => {
 
     return (
         <div className="container mt-4">
-            <h2 className="mb-3">{username}'s Followers</h2>
+            <h2 className="mb-3">{username}'s Followers ({totalFollowers})</h2>
 
             {loading && <p>Loading followers...</p>}
             {error && <p className="text-danger">{error}</p>}

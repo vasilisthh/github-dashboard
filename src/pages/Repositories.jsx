@@ -13,6 +13,7 @@ const Repositories = () => {
     const [error, setError] = useState(null);
     const [sortBy, setSortBy] = useState("stars");
     const [sortOrder, setSortOrder] = useState("desc");
+    const [repoCount, setRepoCount] = useState(0);
 
     useEffect(() => {
         const getRepos = async () => {
@@ -20,13 +21,19 @@ const Repositories = () => {
             setError(null);
             setRepos([]);
 
+            const profileResponse = await fetch(`https://api.github.com/users/${username}`);
+            const profileData = await profileResponse.json();
+            if (profileData.public_repos) {
+                setRepoCount(profileData.public_repos);
+                setTotalPages(Math.ceil(profileData.public_repos / 10));
+            }
+
             const data = await fetchRepositories(username, "full_name", page);
 
             if (data.error) {
                 setError(data.error);
             } else {
                 setRepos(data);
-                setTotalPages(Math.ceil(data.length / 10));
             }
 
             setLoading(false);
@@ -51,9 +58,8 @@ const Repositories = () => {
 
     return (
         <div className="container mt-4">
-            <h2 className="mb-3">{username}'s Repositories</h2>
+            <h2 className="mb-3">{username}'s Repositories ({repoCount})</h2>
 
-            {/* Sorting Controls */}
             <div className="d-flex align-items-center gap-3 mb-3">
                 <div>
                     <label htmlFor="sort" className="fw-bold me-2">Sort by:</label>

@@ -43,19 +43,20 @@ export const fetchRepositories = async (username, sort = "stars", page = 1) => {
     }
 };
 
-export const fetchFollowers = async (username, page = 1) => {
+export const fetchFollowers = async (username, page = 1, perPage = 30) => {
     try {
-        const response = await axios.get(`${BASE_URL}${username}/followers`, {
-            params: { per_page: 10, page },
+        const response = await axios.get(`https://api.github.com/users/${username}/followers`, {
+            params: { per_page: perPage, page },
         });
 
-        if (!Array.isArray(response.data) || response.data.length === 0) {
-            return [];
+        if (!response.data || response.data.length === 0) {
+            return { error: "No followers found." };
         }
 
         return response.data;
     } catch (error) {
-        return [];
+        return { error: error.response?.data?.message || "Error fetching followers." };
     }
 };
+
 
