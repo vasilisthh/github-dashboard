@@ -1,6 +1,13 @@
 import axios from "axios";
 
 const BASE_URL = "https://api.github.com/users/";
+const GITHUB_TOKEN = import.meta.env.VITE_GITHUB_TOKEN;
+
+const axiosInstance = axios.create({
+    headers: GITHUB_TOKEN
+        ? { Authorization: `Bearer ${GITHUB_TOKEN}` }
+        : {},
+});
 
 const handleApiError = (error) => {
     if (error.response) {
@@ -20,7 +27,7 @@ const handleApiError = (error) => {
 
 export const fetchUserProfile = async (username) => {
     try {
-        const response = await axios.get(`${BASE_URL}${username}`);
+        const response = await axiosInstance.get(`${BASE_URL}${username}`);
         return response.data;
     } catch (error) {
         return handleApiError(error);
@@ -29,34 +36,24 @@ export const fetchUserProfile = async (username) => {
 
 export const fetchRepositories = async (username, sort = "stars", page = 1) => {
     try {
-        const response = await axios.get(`https://api.github.com/users/${username}/repos`, {
-            params: { sort, per_page: 10, page },
+        const response = await axiosInstance.get(`${BASE_URL}${username}/repos`, {
+            params: { sort, per_page: 30, page },
         });
-
-        if (!response.data || response.data.length === 0) {
-            return { error: "No repositories found." };
-        }
 
         return response.data;
     } catch (error) {
-        return { error: error.response?.data?.message || "Error fetching repositories." };
+        return handleApiError(error);
     }
 };
 
 export const fetchFollowers = async (username, page = 1, perPage = 30) => {
     try {
-        const response = await axios.get(`https://api.github.com/users/${username}/followers`, {
+        const response = await axiosInstance.get(`${BASE_URL}${username}/followers`, {
             params: { per_page: perPage, page },
         });
 
-        if (!response.data || response.data.length === 0) {
-            return { error: "No followers found." };
-        }
-
         return response.data;
     } catch (error) {
-        return { error: error.response?.data?.message || "Error fetching followers." };
+        return handleApiError(error);
     }
 };
-
-
