@@ -5,7 +5,7 @@ import Pagination from "../components/Pagination";
 
 const Repositories = () => {
     const [searchParams] = useSearchParams();
-    const username = searchParams.get("username") || "vasilisthh";
+    const username = searchParams.get("username") || "github";
     const [repos, setRepos] = useState([]);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);

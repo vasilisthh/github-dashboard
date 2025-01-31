@@ -3,7 +3,7 @@ import DarkModeToggle from "./DarkModeToggle";
 
 const Navbar = () => {
     const [searchParams] = useSearchParams();
-    const username = searchParams.get("username") || "vasilisthh";
+    const username = searchParams.get("username") || "github";
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">

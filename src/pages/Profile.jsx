@@ -5,7 +5,7 @@ import UserCard from "../components/UserCard";
 
 const Profile = () => {
     const [searchParams] = useSearchParams();
-    const username = searchParams.get("username") || "vasilisthh";
+    const username = searchParams.get("username") || "github";
     const [user, setUser] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);

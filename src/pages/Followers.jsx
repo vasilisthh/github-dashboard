@@ -5,7 +5,7 @@ import Pagination from "../components/Pagination";
 
 const Followers = () => {
     const [searchParams] = useSearchParams();
-    const username = searchParams.get("username") || "vasilisthh";
+    const username = searchParams.get("username") || "github";
     const [followers, setFollowers] = useState([]);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
