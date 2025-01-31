@@ -12,7 +12,7 @@ const Followers = () => {
     const [totalFollowers, setTotalFollowers] = useState(0);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
-    const perPage = 30; // 🔹 Show 30 followers per page
+    const perPage = 30;
 
     useEffect(() => {
         const getFollowers = async () => {
