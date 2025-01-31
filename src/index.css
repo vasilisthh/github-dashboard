@@ -1,0 +1,34 @@
+body {
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.dark-mode {
+  background-color: #212529 !important;
+  color: white !important;
+}
+
+.btn-dark {
+  background: none !important;
+  border: none !important;
+  color: black !important;
+  font-size: 1.5rem;
+}
+
+.btn-dark:hover {
+  color: gray !important;
+  transform: scale(1.1);
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-light {
+  background: none !important;
+  border: none !important;
+  color: white !important;
+  font-size: 1.5rem;
+}
+
+.btn-light:hover {
+  color: lightgray !important;
+  transform: scale(1.1);
+  transition: all 0.2s ease-in-out;
+}
